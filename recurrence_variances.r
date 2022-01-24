@@ -42,6 +42,7 @@ if(length(args)==0){
   print("No arguments supplied.")
   N <- 524287
   log2Generations <- 21 
+  alpha <- 1.6
 }else{
   for(i in 1:length(args)){
     eval(parse(text=args[[i]]))
@@ -245,7 +246,7 @@ sigma2 <- rep(NA, 2*N+1)
 # Can also use instead the usual initial conditions to control the first generations
 sigma2 <- rep(0, 2*N+1)   #  0 because here we work with 1 - variance
 
-alpha <- 1.6  # selection point: we keep only parents that have a value alpha*current_standard_deviation above current mean.
+# alpha <- 1.6  # selection point: we keep only parents that have a value alpha*current_standard_deviation above current mean.
 mu <- 0     # initial value of the mean in the distribution of genetic values
 
 ##! log2Generations <- 17
@@ -295,9 +296,10 @@ for (j in 1:g) {
     gammas_deltas[1+floor(log2gen),3] <- these_gammas_deltas[[3]]
     gammas_deltas[1+floor(log2gen),4] <- these_gammas_deltas[[4]]
     sigmaSquare[,1+floor(log2gen)] <- sigma2[(N+1):(2*N+1)]  # we only store the iterations that are powers of 2
-    saveRDS(sigmaSquare, file=paste("sigmaSquare2_N",N,"_log2Gen",log2Generations,".rds",sep=""))
-    write.table(mu, file=paste("mu2_N",N,"_log2Gen",log2Generations,".txt",sep=""), append = TRUE)
+    saveRDS(sigmaSquare, file=paste("sigmaSquare2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".rds",sep=""))
+    write.table(, file=paste("mu2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".txt",sep=""), append = TRUE)
   }
+  if(j < 100)  write.table(matrix(c(j,mu),nrow = 1), file=paste("mu2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".txt",sep=""), append = TRUE)
 }
 
 cputime <- proc.time() - time
@@ -326,36 +328,4 @@ cputime
 #     6000                     
 
 
-# Save these data
-# saveRDS(sigmaSquare, file="sigmaSquare_N4000_log2Gen15.rds")
-# to restore, do sigmaSquare <- readRDS("sigmaSquare_N4000_log2Gen15.rds")
-sigmaSquare <- readRDS("sigmaSquare_N32767_log2Gen20.rds")
-
-N <- dim(sigmaSquare)[1] -1
-log2Generations <- dim(sigmaSquare)[2]-1
-
-odds <- seq(2,N,by=2)  # odd sites because origin is at index = 1
-mcol <- rainbow(log2Generations+1)
-
-# First, the qualitative shape (no rescaling)
-plot(odds,sigmaSquare[odds, 1] , xlab="site_index", ylab="variance", xlim=c(0,250), ylim=c(0,1), type="l", col=mcol[1], main = paste("N = ", N), lty = 2)
-for(log2gen in 1:log2Generations) {
-  points(odds, sigmaSquare[odds,1+log2gen], type="l", col=mcol[log2gen+1], lty = 2)
-}
-
-
-## fit
-x <- 6:17
-y <- 1 - unlist(sigmaSquare[1,x+1])
-fit <- nls(y ~ A/x + B/(log2(x)*x^1.5), start = list(A = 1.4, B = -2))
-x2 <- 0:20
-y2 <- predict(fit,list(x = x2))
-
-x <- 0:20
-y <- 1 - unlist(sigmaSquare[1,x+1])
-
-plot(x,y*x, ylim =c(0,1.4),col = "red")
-lines(x2,y2*x2)
-
-dev.off()
 
