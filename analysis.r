@@ -1,10 +1,10 @@
 
-data1 <- readRDS("sigmaSquare_N16383_log2Gen20_v7.rds")
-data2 <- readRDS("sigmaSquare_N32767_log2Gen20.rds")
-data3 <- readRDS("sigmaSquare_N65535_log2Gen20.rds")
-data4 <- readRDS("sigmaSquare_N131071_log2Gen21.rds")
-data5 <- readRDS("sigmaSquare_N262143_log2Gen21.rds")
-data6 <- readRDS("sigmaSquare_N524287_log2Gen21.rds")
+data1 <- readRDS("sigmaSquare2_N16383_log2Gen21_alpha1.6.rds")
+data2 <- readRDS("sigmaSquare2_N32767_log2Gen21_alpha1.6.rds")
+data3 <- readRDS("sigmaSquare2_N65535_log2Gen21_alpha1.6.rds")
+data4 <- readRDS("sigmaSquare2_N131071_log2Gen21_alpha1.6.rds")
+data5 <- readRDS("sigmaSquare2_N262143_log2Gen21_alpha1.6.rds")
+data6 <- readRDS("sigmaSquare2_N524287_log2Gen21_alpha1.6.rds")
 
 sigmaSquare <- list(data1,data2,data3,data4,data5,data6)
 
@@ -73,7 +73,7 @@ N <- c(16383,32767,65535,131071,262143,524287)
 data <- sapply(sigmaSquare, function(x) x[1,19+1])
 epsilon <- 9
 
-plot(N,round(data,epsilon), type = "b", ylim = c(min(data)-10^-epsilon, max(data)+10^-epsilon))
+plot(N,round(data,epsilon), type = "b", ylim = c(min(data, na.rm = TRUE)-10^-epsilon, max(data, na.rm = TRUE)+10^-epsilon))
 abline(h = max(round(data,epsilon)), col = "red")
 
 
@@ -93,4 +93,83 @@ for(i in 1:length(data)) {
 legend("topleft", legend = paste("N =", c(16383,32767,65535,131071,262143,524287)), col = mcol, lty = 1)
 dev.off()
 
+
+
+########################################
+########################################
+## evolution mean mu (alpha = 1.6)
+########################################
+########################################
+
+data <- read.table("mu2_N16383_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data1 <- data
+data <- read.table("mu2_N32767_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data2 <- data
+data <- read.table("mu2_N65535_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data3 <- data
+data <- read.table("mu2_N131071_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data4 <- data
+data <- read.table("mu2_N262143_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data5 <- data
+data <- read.table("mu2_N524287_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data6 <- data
+
+mu <- list(data1,data2,data3,data4,data5,data6)
+N <- c(16383,32767,65535,131071,262143,524287)
+mcol <- c("green4","cyan","blue","purple","red","black")
+
+for(i in 1:length(mu)) {
+  if(i == 1) plot(mu[[i]]$generation, mu[[i]]$mu, col = mcol[1], type = "b")
+  points(mu[[i]]$generation, mu[[i]]$mu, col = mcol[i], type = "b")
+}
+
+legend("topleft", legend = paste("N =", N), col = mcol, lty = 1)
+
+
+#############################
+## with different mu
+
+data <- read.table("mu2_N16383_log2Gen21_alpha100.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data1 <- data
+data <- read.table("mu2_N16383_log2Gen21_alpha0.1.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data2 <- data
+data <- read.table("mu2_N16383_log2Gen21_alpha1.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data3 <- data
+data <- read.table("mu2_N16383_log2Gen21_alpha10.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data4 <- data
+data <- read.table("mu2_N16383_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
+data <- data[seq(2, nrow(data), by = 2), -1]
+data$generation <- as.numeric(data$generation)
+data5 <- data
+
+mu <- list(data1,data2,data3,data4,data5,data6)
+alpha <- c(1.6, 5, 10, 15, 20, 25)
+mcol <- c("green4","cyan","blue","purple","red","black")
+
+for(i in 1:length(mu)) {
+  if(i == 1) plot(mu[[i]]$generation, mu[[i]]$mu, col = mcol[1], type = "b")
+  points(mu[[i]]$generation, mu[[i]]$mu, col = mcol[i], type = "b")
+}
+
+legend("topleft", legend = paste("alpha =", alpha), col = mcol, lty = 1)
 

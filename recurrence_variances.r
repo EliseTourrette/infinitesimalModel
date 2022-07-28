@@ -297,9 +297,10 @@ for (j in 1:g) {
     gammas_deltas[1+floor(log2gen),4] <- these_gammas_deltas[[4]]
     sigmaSquare[,1+floor(log2gen)] <- sigma2[(N+1):(2*N+1)]  # we only store the iterations that are powers of 2
     saveRDS(sigmaSquare, file=paste("sigmaSquare2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".rds",sep=""))
-    write.table(matrix(c(j,mu),nrow = 1), file=paste("mu2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".txt",sep=""), append = TRUE)
+    write.table(matrix(c(j,mu),nrow=1), file=paste("mu2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".txt",sep=""), append = TRUE)
   }
-  if(j < 100)  write.table(matrix(c(j,mu),nrow = 1), file=paste("mu2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".txt",sep=""), append = TRUE)
+  if(j <= 10000)  write.table(matrix(c(j,mu),nrow = 1), file=paste("mu2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".txt",sep=""), append = TRUE)
+  if(j <= 10000)  write.table(matrix(c(j,sigma2[N+1]),nrow = 1), file=paste("mu2_N",N,"_log2Gen",log2Generations,"_alpha", alpha, ".txt",sep=""), append = TRUE)
 }
 
 cputime <- proc.time() - time
