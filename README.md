@@ -2,4 +2,4 @@
 
 with Olivier Martin, GQE - Le Moulon (INRAE)
 
-simulation, and plot, script for the infinitesimal project 
+simulation, analysis and plot scripts for the infinitesimal project (Tourrette and Martin, 202X).
