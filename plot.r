@@ -5,6 +5,7 @@
 # saveRDS(sigmaSquare, file="sigmaSquare_N4000_log2Gen15.rds")
 # to restore, do sigmaSquare <- readRDS("sigmaSquare_N4000_log2Gen15.rds")
 sigmaSquare <- readRDS("sigmaSquare_N32767_log2Gen20.rds")
+sigmaSquare <- readRDS("results/sigmaSquare_N524287_log2Gen21.rds")
 
 N <- dim(sigmaSquare)[1] -1
 log2Generations <- dim(sigmaSquare)[2]-1
@@ -23,10 +24,10 @@ for(log2gen in 1:log2Generations) {
 x <- 6:17
 y <- 1 - unlist(sigmaSquare[1,x+1])
 fit <- nls(y ~ A/x + B/(log2(x)*x^1.5), start = list(A = 1.4, B = -2))
-x2 <- 0:20
+x2 <- 0:21
 y2 <- predict(fit,list(x = x2))
 
-x <- 0:20
+x <- 0:21
 y <- 1 - unlist(sigmaSquare[1,x+1])
 
 plot(x,y*x, ylim =c(0,1.4),col = "red")
