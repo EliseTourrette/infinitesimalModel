@@ -21,6 +21,10 @@ mcol <- rainbow(21+1)
 g1 <- 0
 nbSite = 250 #100000
 
+## plot of the variance sigma2 vs the sites (index)
+## do not show all of the sites
+## plot one line per N
+## FIGURE 2 of the preprint
 pdf("variance_vs_site_zoom.pdf", width = 14, height = 14)
 
 for(i in 1:length(sigmaSquare)) {
@@ -44,11 +48,19 @@ dev.off()
 
 
 
+#### ----------------------------------------------
 ## fit
 
 fit <- vector("list", length(sigmaSquare))
 mcol <- c("green4","cyan","blue","purple","red","black")
 
+## fit the sigma2 with a function (actually 1-sigma2)
+## we found that a function in A/x + B/(log2(x)*x^1.5 fitted best the data
+## with generation = 2^x
+## check the fit for all N
+## and look at the best values for A and B
+## lastly, plot the different sigma2 and the fit on the same plot
+## FIGURE 3 of the preprint
 pdf("fit.pdf")
 
 for(i in 1:length(sigmaSquare)) {
@@ -85,7 +97,9 @@ plot(N,round(data,epsilon), type = "b", ylim = c(min(data, na.rm = TRUE)-10^-eps
 abline(h = max(round(data,epsilon)), col = "red")
 
 
-## plot sigma vs g for the different N
+               
+#### ----------------------------------------------
+## plot sigma2 vs g for the different N
 
 N <- c(16383,32767,65535,131071,262143,524287)
 mcol <- c("green4","cyan","blue","purple","red","black")
@@ -103,11 +117,10 @@ dev.off()
 
 
 
-########################################
-########################################
-## evolution mean mu (alpha = 1.6)
-########################################
-########################################
+#### ----------------------------------------------
+#### ----------------------------------------------
+## evolution of the mean mu (selection: alpha = 1.6)
+
 
 data <- read.table("mu2_N16383_log2Gen21_alpha1.6.txt", fill = TRUE, header = FALSE, col.names = c("row", "generation", "mu"))
 data <- data[seq(2, nrow(data), by = 2), -1]
