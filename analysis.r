@@ -6,6 +6,14 @@ data4 <- readRDS("sigmaSquare2_N131071_log2Gen21_alpha1.6.rds")
 data5 <- readRDS("sigmaSquare2_N262143_log2Gen21_alpha1.6.rds")
 data6 <- readRDS("sigmaSquare2_N524287_log2Gen21_alpha1.6.rds")
 
+
+#write.table(data1, file = "sigmaSquare2_N16383_log2Gen21_alpha1.6.txt", col.names = FALSE, row.names = FALSE)
+#write.table(data2, file = "sigmaSquare2_N32767_log2Gen21_alpha1.6.txt", col.names = FALSE, row.names = FALSE)
+#write.table(data3, file = "sigmaSquare2_N65535_log2Gen21_alpha1.6.txt", col.names = FALSE, row.names = FALSE)
+#write.table(data4, file = "sigmaSquare2_N131071_log2Gen21_alpha1.6.txt", col.names = FALSE, row.names = FALSE)
+#write.table(data5, file = "sigmaSquare2_N262143_log2Gen21_alpha1.6.txt", col.names = FALSE, row.names = FALSE)
+#write.table(data6, file = "sigmaSquare2_N524287_log2Gen21_alpha1.6.txt", col.names = FALSE, row.names = FALSE)
+
 sigmaSquare <- list(data1,data2,data3,data4,data5,data6)
 
 mlty <- length(sigmaSquare):1
@@ -50,10 +58,10 @@ for(i in 1:length(sigmaSquare)) {
 
     x2 <- seq(from = 6, to = 17, by = 0.01)
     y2 <- predict(fit[[i]],list(x = x2))
-    x3 <- seq(from = 0, to = 20, by = 0.01)
+    x3 <- seq(from = 0, to = 21, by = 0.01)
     y3 <- predict(fit[[i]],list(x = x3))
 
-    x <- 0:20
+    x <- 0:21
     y <- 1 - unlist(sigmaSquare[[i]][1,x+1])
 
     if(i == 1) plot(x,y*x, ylim =c(0,2), col = mcol[i])
@@ -172,4 +180,3 @@ for(i in 1:length(mu)) {
 }
 
 legend("topleft", legend = paste("alpha =", alpha), col = mcol, lty = 1)
-
