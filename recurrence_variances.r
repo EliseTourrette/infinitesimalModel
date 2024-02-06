@@ -35,7 +35,7 @@
 # size that must be a power of 2 to have a fast FFT calculation.
 # 
 
-# R CMD BATCH --no-save --no-restore '--args N=511 log2Generations=17' ~/Documents/POSTDOC_M2/recurrence_variances_v7.r out7.out &
+# R CMD BATCH --no-save --no-restore '--args N=511 log2Generations=17' recurrence_variances.r out.out &
 
 args=(commandArgs(TRUE))
 if(length(args)==0){
